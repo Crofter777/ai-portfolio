@@ -1,0 +1,105 @@
+/*
+  ============================================
+  AI Innovation Portfolio - Animation Styles
+  ============================================
+  
+  This file contains all the new and enhanced
+  animations for the portfolio website.
+*/
+
+/* 
+  1. Enhanced Hero Section Animations
+  ====================================
+  - Creates a more engaging and dynamic entry for the hero section.
+  - Adds a subtle zoom and fade-in effect to the hero content.
+*/
+.hero-content {
+    animation: hero-fade-in 1s ease-out forwards;
+    animation-delay: 0.5s;
+    opacity: 0;
+}
+
+@keyframes hero-fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 
+  2. Neural Network Animation
+  ====================================
+  - Replaces the placeholder text in project images with a
+    dynamic, AI-themed animation.
+  - Simulates a neural network with nodes and connections.
+*/
+.project-image-canvas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* 
+  3. Staggered Project Card Animation
+  ====================================
+  - Introduces a staggered fade-in effect for project cards
+    as the user scrolls, making the appearance more fluid.
+*/
+.project-card {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.project-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger the animation for each card */
+.project-card:nth-child(1) { transition-delay: 0.1s; }
+.project-card:nth-child(2) { transition-delay: 0.2s; }
+.project-card:nth-child(3) { transition-delay: 0.3s; }
+.project-card:nth-child(4) { transition-delay: 0.4s; }
+.project-card:nth-child(5) { transition-delay: 0.5s; }
+
+
+/* 
+  4. 3D Hover Effect for Project Cards
+  ====================================
+  - Adds a subtle 3D tilt effect on hover, making the
+    cards feel more interactive and modern.
+*/
+.project-card {
+    transform-style: preserve-3d;
+}
+
+.project-card:hover {
+    transform: translateY(-10px) rotateX(5deg) rotateY(3deg) scale(1.03);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+}
+
+/* 
+  5. Animated Competition Statistics
+  ====================================
+  - Animates the numbers in the competition stats section
+    to count up when they become visible.
+*/
+.stat-number {
+    transition: all 0.5s ease;
+}
+
+/* 
+  6. Subtle Hover Effects for Links & Buttons
+  ====================================
+  - Adds a subtle upward movement to nav links on hover.
+*/
+.nav-links a:hover {
+    transform: translateY(-2px);
+}
