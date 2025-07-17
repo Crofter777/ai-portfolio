@@ -69,7 +69,6 @@
 .project-card:nth-child(4) { transition-delay: 0.4s; }
 .project-card:nth-child(5) { transition-delay: 0.5s; }
 
-
 /* 
   4. 3D Hover Effect for Project Cards
   ====================================
@@ -102,4 +101,103 @@
 */
 .nav-links a:hover {
     transform: translateY(-2px);
+}
+
+/* 
+  7. Competition Stats and Cards Animation
+  ====================================
+  - Ensures competition stats and cards animate properly
+*/
+.stat-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.stat-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.competition-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.competition-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger animation for competition cards */
+.competition-card:nth-child(1) { transition-delay: 0.1s; }
+.competition-card:nth-child(2) { transition-delay: 0.2s; }
+.competition-card:nth-child(3) { transition-delay: 0.3s; }
+.competition-card:nth-child(4) { transition-delay: 0.4s; }
+.competition-card:nth-child(5) { transition-delay: 0.5s; }
+.competition-card:nth-child(6) { transition-delay: 0.6s; }
+.competition-card:nth-child(7) { transition-delay: 0.7s; }
+.competition-card:nth-child(8) { transition-delay: 0.8s; }
+
+/* 
+  8. Certificate Cards Animation
+  ====================================
+  - Adds smooth animations for certificate cards
+*/
+.certificate-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.certificate-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger animation for certificate cards */
+.certificate-card:nth-child(1) { transition-delay: 0.1s; }
+.certificate-card:nth-child(2) { transition-delay: 0.2s; }
+.certificate-card:nth-child(3) { transition-delay: 0.3s; }
+.certificate-card:nth-child(4) { transition-delay: 0.4s; }
+.certificate-card:nth-child(5) { transition-delay: 0.5s; }
+.certificate-card:nth-child(6) { transition-delay: 0.6s; }
+.certificate-card:nth-child(7) { transition-delay: 0.7s; }
+
+/* 
+  9. Image Viewer Enhancements
+  ====================================
+  - Adds smooth transitions for the fullscreen image viewer
+*/
+.image-viewer {
+    animation: fadeIn 0.3s ease;
+}
+
+.image-viewer img {
+    animation: zoomIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* 
+  10. Image Hover Effects
+  ====================================
+  - Adds cursor pointer and hover effects to all images
+*/
+img {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+img:hover {
+    filter: brightness(1.1);
 }

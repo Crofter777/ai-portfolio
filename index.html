@@ -826,6 +826,49 @@
         img:hover {
             filter: brightness(1.1);
         }
+
+        /* Ensure images in proof grids and certificates are clickable */
+        .proof-item img,
+        .certificate-image,
+        .project-image img {
+            cursor: pointer !important;
+            pointer-events: auto !important;
+        }
+
+        /* Prevent image viewer images from being clickable */
+        .image-viewer img {
+            cursor: default !important;
+            pointer-events: none !important;
+        }
+
+        /* Ensure competition stats are visible */
+        .competition-stats {
+            opacity: 1;
+            transform: none;
+        }
+
+        .stat-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .stat-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Ensure competition cards are visible */
+        .competition-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .competition-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
@@ -1147,20 +1190,70 @@
         }
 
         function setupImageViewer() {
-            // Add click listeners to all images
-            const images = document.querySelectorAll('img');
-            images.forEach(img => {
-                if (!img.closest('.image-viewer')) {
-                    img.addEventListener('click', function() {
-                        openImageViewer(this.src);
-                    });
+            // Use event delegation for better performance and dynamic content
+            document.addEventListener('click', function(e) {
+                // Check if the clicked element is an image or contains an image
+                let targetImg = null;
+                
+                if (e.target.tagName === 'IMG' && !e.target.closest('.image-viewer')) {
+                    targetImg = e.target;
+                } else if (e.target.querySelector('img') && !e.target.closest('.image-viewer')) {
+                    targetImg = e.target.querySelector('img');
                 }
+                
+                if (targetImg && targetImg.src) {
+                    e.preventDefault();
+                    openImageViewer(targetImg.src);
+                }
+            });
+
+            // Also directly attach to images for better compatibility
+            function attachImageListeners() {
+                const images = document.querySelectorAll('img:not(.image-viewer img)');
+                images.forEach(img => {
+                    // Remove existing listeners to prevent duplicates
+                    img.removeEventListener('click', img._imageViewerHandler);
+                    
+                    // Add new listener
+                    img._imageViewerHandler = function(e) {
+                        e.stopPropagation();
+                        openImageViewer(this.src);
+                    };
+                    img.addEventListener('click', img._imageViewerHandler);
+                    
+                    // Ensure cursor indicates clickable
+                    img.style.cursor = 'pointer';
+                });
+            }
+
+            // Initial attachment
+            attachImageListeners();
+            
+            // Re-attach periodically to catch dynamically loaded images
+            setInterval(attachImageListeners, 1000);
+            
+            // Re-attach when DOM changes
+            const observer = new MutationObserver(function(mutations) {
+                let shouldReattach = false;
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                        shouldReattach = true;
+                    }
+                });
+                if (shouldReattach) {
+                    setTimeout(attachImageListeners, 100);
+                }
+            });
+            
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
             });
 
             // Close viewer when clicking outside the image
             const viewer = document.getElementById('imageViewer');
             viewer.addEventListener('click', function(e) {
-                if (e.target === viewer) {
+                if (e.target === viewer || e.target.classList.contains('image-viewer-close')) {
                     closeImageViewer();
                 }
             });
@@ -1188,7 +1281,7 @@
                 });
             }, observerOptions);
             
-            document.querySelectorAll('.project-card, .competition-card, .certificate-card').forEach(el => {
+            document.querySelectorAll('.project-card, .competition-card, .certificate-card, .stat-card').forEach(el => {
                 elementObserver.observe(el);
             });
 
@@ -1238,6 +1331,16 @@
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', smoothScroll);
             });
+
+            // Ensure image viewer is properly initialized after all images load
+            window.addEventListener('load', () => {
+                setTimeout(setupImageViewer, 500);
+            });
+        });
+
+        // Also initialize on DOMContentLoaded for faster setup
+        document.addEventListener('DOMContentLoaded', () => {
+            setupImageViewer();
         });
     </script>
 </body>
