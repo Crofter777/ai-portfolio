@@ -584,6 +584,80 @@
             animation: fadeInUp 0.5s ease;
         }
 
+        /* Certificates Section */
+        .certificates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .certificate-card {
+            position: relative;
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            aspect-ratio: 1.414/1;
+        }
+
+        .certificate-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-glow);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .certificate-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .certificate-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(0, 0, 0, 0.8) 0%,
+                rgba(255, 215, 0, 0.1) 100%
+            );
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .certificate-card:hover .certificate-overlay {
+            opacity: 1;
+        }
+
+        .certificate-card:hover .certificate-image {
+            transform: scale(1.1);
+        }
+
+        .certificate-overlay h3 {
+            color: var(--gold-primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .certificate-overlay p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            text-align: center;
+        }
+
         /* Footer */
         footer {
             background: var(--bg-secondary);
@@ -681,6 +755,7 @@
                 <li><a href="#home">Home</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#competitions">Achievements</a></li>
+                <li><a href="#certificates">Certificates</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </div>
@@ -882,6 +957,64 @@
         </div>
     </section>
 
+    <!-- Certificates Section -->
+    <section id="certificates" class="section">
+        <h2 class="section-title">Certificates</h2>
+        <p class="section-subtitle">Professional certifications and achievements</p>
+        
+        <div class="certificates-grid">
+            <div class="certificate-card">
+                <img src="Photos/certificates/certificate_01.jpg" alt="Certificate 1" class="certificate-image">
+                <div class="certificate-overlay">
+                    <h3>Certificate 1</h3>
+                    <p>Professional Achievement</p>
+                </div>
+            </div>
+            <div class="certificate-card">
+                <img src="Photos/certificates/certificate_02.jpg" alt="Certificate 2" class="certificate-image">
+                <div class="certificate-overlay">
+                    <h3>Certificate 2</h3>
+                    <p>Professional Achievement</p>
+                </div>
+            </div>
+            <div class="certificate-card">
+                <img src="Photos/certificates/certificate_03.jpg" alt="Certificate 3" class="certificate-image">
+                <div class="certificate-overlay">
+                    <h3>Certificate 3</h3>
+                    <p>Professional Achievement</p>
+                </div>
+            </div>
+            <div class="certificate-card">
+                <img src="Photos/certificates/certificate_04.jpg" alt="Certificate 4" class="certificate-image">
+                <div class="certificate-overlay">
+                    <h3>Certificate 4</h3>
+                    <p>Professional Achievement</p>
+                </div>
+            </div>
+            <div class="certificate-card">
+                <img src="Photos/certificates/certificate_05.jpg" alt="Certificate 5" class="certificate-image">
+                <div class="certificate-overlay">
+                    <h3>Certificate 5</h3>
+                    <p>Professional Achievement</p>
+                </div>
+            </div>
+            <div class="certificate-card">
+                <img src="Photos/certificates/certificate_06.jpg" alt="Certificate 6" class="certificate-image">
+                <div class="certificate-overlay">
+                    <h3>Certificate 6</h3>
+                    <p>Professional Achievement</p>
+                </div>
+            </div>
+            <div class="certificate-card">
+                <img src="Photos/certificates/certificate_07.jpg" alt="Certificate 7" class="certificate-image">
+                <div class="certificate-overlay">
+                    <h3>Certificate 7</h3>
+                    <p>Professional Achievement</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
     <section id="contact" class="section">
         <h2 class="section-title">Get In Touch</h2>
@@ -926,7 +1059,7 @@
                 });
             }, observerOptions);
             
-            document.querySelectorAll('.project-card, .competition-card').forEach(el => {
+            document.querySelectorAll('.project-card, .competition-card, .certificate-card').forEach(el => {
                 elementObserver.observe(el);
             });
 
