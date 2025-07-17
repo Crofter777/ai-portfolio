@@ -679,6 +679,22 @@
             }
         }
 
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stat-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .stat-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
@@ -743,6 +759,72 @@
         @keyframes gridMove {
             0% { transform: translate(0, 0); }
             100% { transform: translate(50px, 50px); }
+        }
+
+        /* Full Screen Image Viewer */
+        .image-viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            cursor: pointer;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .image-viewer.active {
+            display: flex;
+        }
+
+        .image-viewer img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+            animation: zoomIn 0.3s ease;
+        }
+
+        .image-viewer-close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: var(--gold-primary);
+            font-size: 3rem;
+            font-weight: 300;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10001;
+        }
+
+        .image-viewer-close:hover {
+            transform: scale(1.2);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Make all images clickable */
+        img {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        img:hover {
+            filter: brightness(1.1);
         }
     </style>
 </head>
@@ -1027,6 +1109,12 @@
         <p>&copy; 2024 AI Innovation Portfolio. All rights reserved.</p>
     </footer>
 
+    <!-- Full Screen Image Viewer -->
+    <div class="image-viewer" id="imageViewer">
+        <span class="image-viewer-close" onclick="closeImageViewer()">&times;</span>
+        <img id="imageViewerImg" src="" alt="Full Screen Image">
+    </div>
+
     <script>
         // --- Global Functions ---
         function displayEmail() {
@@ -1043,6 +1131,47 @@
             }
         }
 
+        // --- Image Viewer Functions ---
+        function openImageViewer(imgSrc) {
+            const viewer = document.getElementById('imageViewer');
+            const viewerImg = document.getElementById('imageViewerImg');
+            viewerImg.src = imgSrc;
+            viewer.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeImageViewer() {
+            const viewer = document.getElementById('imageViewer');
+            viewer.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function setupImageViewer() {
+            // Add click listeners to all images
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                if (!img.closest('.image-viewer')) {
+                    img.addEventListener('click', function() {
+                        openImageViewer(this.src);
+                    });
+                }
+            });
+
+            // Close viewer when clicking outside the image
+            const viewer = document.getElementById('imageViewer');
+            viewer.addEventListener('click', function(e) {
+                if (e.target === viewer) {
+                    closeImageViewer();
+                }
+            });
+
+            // Close with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeImageViewer();
+                }
+            });
+        }
 
         function setupIntersectionObservers() {
             const observerOptions = {
@@ -1103,6 +1232,7 @@
 
             // Setup animations and observers
             setupIntersectionObservers();
+            setupImageViewer();
 
             // Setup smooth scrolling
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
